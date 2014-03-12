@@ -2,8 +2,12 @@ var GameLayer = cc.LayerColor.extend({
     init: function() {
         this._super( new cc.Color4B( 127, 127, 127, 255 ) );
         this.setPosition( new cc.Point( 0, 0 ) );
+        this.background = new Background();
+        this.background.setPosition(new cc.Point(434,200));
+        this.background.scheduleUpdate();
+        this.addChild(this.background);
         this.player = new Player();
-        this.player.setPosition(new cc.Point(400,200));
+        this.player.setPosition(new cc.Point(250,380));
         this.player.scheduleUpdate();
         this.addChild(this.player);
         return true;
