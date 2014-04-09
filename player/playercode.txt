@@ -1,0 +1,1 @@
+<bannedstory version="3.0"><character><00002003/><00020008 c="0" e="blink"/><00030030 c="0"/></character></bannedstory>
