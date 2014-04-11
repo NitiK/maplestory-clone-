@@ -51,9 +51,9 @@ var Player = cc.Sprite.extend({
             if ( ( !this.moveLeft ) && ( !this.moveRight ) ) {
                 this.autoDeaccelerateX();
             } else if ( this.moveRight ) {
-                this.accelerateX( 1 );
+                this.accelerateX( Player.accelRight );
             } else {
-                this.accelerateX( -1 );
+                this.accelerateX( Player.accelLeft );
             }
         }
         this.x += this.vx;
@@ -64,23 +64,28 @@ var Player = cc.Sprite.extend({
             this.x -= 640;
         }*/
     },
-
+    jumpUp: function(){
+                this.vy = this.jumpV;
+                this.y = 112 + this.vy;
+                this.ground = null;
+    },
+    fallDown: function(){
+            this.vy += this.g;
+            this.y += this.vy;
+    },
     updateYMovement: function() {
         if ( this.ground ) {
             this.vy = 0;
             if ( this.jump ) {
-                this.vy = this.jumpV;
-                this.y = 112 + this.vy;
-                this.ground = null;
+                this.jumpUp();
             }
         }
         else if(this.y>112){
-            this.vy += this.g;
-            this.y += this.vy;
+            this.fallDown();
         }
         else{
            this.vy=0;
-            this.ground=112;
+            this.ground=true;
         }
     },
 
@@ -144,8 +149,10 @@ var Player = cc.Sprite.extend({
 	return cc.RepeatForever.create( cc.Animate.create( animation ) );
     }
 });
- 
+
+Player.accelRight = 1;
+Player.accelLeft = -1;
 Player.KEYMAP = {}
 Player.KEYMAP[cc.KEY.left] = 'moveLeft';
 Player.KEYMAP[cc.KEY.right] = 'moveRight';
-Player.KEYMAP[cc.KEY.up] = 'jump';
+Player.KEYMAP[cc.KEY.space] = 'jump';
