@@ -1,13 +1,10 @@
 var GameLayer = cc.LayerColor.extend({
     onKeyDown: function( e ) {
-	console.log( 'Down: ' + e );
-        this.player.move(e);
-        this.player.update();
+        this.player.handleKeyDown( e );
     },
+
     onKeyUp: function( e ) {
-	console.log( 'Up: ' + e );
-        this.player.move(e);
-        this.player.update();
+        this.player.handleKeyUp( e );
     },
     init: function() {
         this._super( new cc.Color4B( 127, 127, 127, 255 ) );
@@ -16,8 +13,7 @@ var GameLayer = cc.LayerColor.extend({
         this.background.setPosition(new cc.Point(434,200));
         this.background.scheduleUpdate();
         this.addChild(this.background);
-        this.player = new Player();
-        this.player.setPosition(new cc.Point(250,112));
+        this.player = new Player(250,112);
         this.player.scheduleUpdate();
         this.addChild(this.player);
         this.setKeyboardEnabled( true );
