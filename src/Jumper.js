@@ -1,16 +1,16 @@
 var Jumper = cc.Sprite.extend({
     ctor: function( x, y ) {
         this._super();
-        this.initWithFile( 'res/images/jumper2.png' );
+        this.initWithFile( 'res/images/player/jumper2.png' );
         this.setAnchorPoint( cc.p( 0.5, 0 ) );
         this.x = x;
         this.y = y;
 
-        this.maxVx = 8;
-        this.accX = 0.25;
-        this.backAccX = 0.5;
-        this.jumpV = 20;
-        this.g = -1;
+        this.maxVx = 3;
+        this.accX = 2;
+        this.backAccX = 1;
+        this.jumpV = 10;
+        this.g = -0.5;
         
         this.vx = 0;
         this.vy = 0;

@@ -8,7 +8,7 @@ var Block = cc.Sprite.extend({
     },
 
     getTopY: function() {
-        return cc.rectGetMaxY( this.getBoundingBoxToWorld() );
+        return cc.rectGetMaxY( this.getBoundingBox() );
     },
 
     hitTop: function( oldRect, newRect ) {
