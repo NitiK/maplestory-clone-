@@ -1,6 +1,7 @@
 var Background = cc.Sprite.extend({
-    ctor: function() {
+    ctor: function(e) {
         this._super();
-        this.initWithFile( 'background/MapleMap_image.png' );
+        if( e == 1) this.initWithFile( 'background/background1.png' );
+        else this.initWithFile( 'background/background2.png' );
     }
 });

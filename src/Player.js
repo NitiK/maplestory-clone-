@@ -4,6 +4,7 @@ var Player = cc.Sprite.extend({
         this.initWithFile( 'player/player.png' );
         this.x=x;
         this.y=y;
+        this.yn=75;
         
         this.maxVx = 3;
         this.accX = 2;
@@ -17,7 +18,9 @@ var Player = cc.Sprite.extend({
         this.moveLeft = false;
         this.moveRight = false;
         this.jump = false;
-
+        
+        this.onBlock = null;
+        
         this.ground = true;
         this.updatePosition();
     },
@@ -66,12 +69,37 @@ var Player = cc.Sprite.extend({
     },
     jumpUp: function(){
                 this.vy = this.jumpV;
-                this.y = 112 + this.vy;
+                this.y = this.yn + this.vy;
                 this.ground = null;
     },
     fallDown: function(){
             this.vy += this.g;
             this.y += this.vy;
+    },
+    jumpOnBlock: function(){
+        if(this.y>140)
+        {    
+            this.fallDown();
+        } 
+        else if(this.x<260||this.x>410)
+        {
+               if(this.y>75)
+               {
+                    this.fallDown(); 
+               }
+               else
+               {
+                    this.vy=0;
+                    this.yn=75;
+                    this.ground=true;
+               }
+        } 
+        else
+        {
+            this.vy=0;
+            this.yn=140;
+            this.ground=true;
+        }
     },
     updateYMovement: function() {
         if ( this.ground ) {
@@ -80,11 +108,12 @@ var Player = cc.Sprite.extend({
                 this.jumpUp();
             }
         }
-        else if(this.y>112){
+        else if(this.y>75){
             this.fallDown();
         }
         else{
-           this.vy=0;
+            this.vy=0
+            this.vn=75;
             this.ground=true;
         }
     },
