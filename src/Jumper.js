@@ -31,6 +31,7 @@ var Jumper = cc.Sprite.extend({
         this.ground = null;
 
         this.blocks = [];
+        this.traps = [];
 
         this.updateSpritePosition();
     },
@@ -68,24 +69,60 @@ var Jumper = cc.Sprite.extend({
     isNotMove: function(){
         return ( !this.moveLeft ) && ( !this.moveRight );
     },
+    
+    TouchTraps: function(i){
+        var spirteTrap = this.traps[i].getPosition();
+        /*this.traps.forEach( function( b ) {
+            var spriteTrap=b.getPosition();
+        }, this );*/
+        if(this.onFloor)
+        {
+           if((spirteTrap.x<=this.x+30&&spirteTrap.x>=this.x-30)&&         (spirteTrap.y<=this.y+30&&spirteTrap.y>=this.y-60))
+           {
+               return true;
+           }
+            else
+            {
+                return false;
+            }
+        }
+        else if((spirteTrap.x<=this.x+30&&spirteTrap.x>=this.x-30)&&         (spirteTrap.y<=this.y+60&&spirteTrap.y>=this.y-60))
+        {
+            
+            return true;
+        }
+        else{
+            return false;
+        }
+    },
 
     updateXMovement: function() {
-        if ( this.ground ) {
-            if ( this.isNotMove() ) {
-                if(this.onFloor)
-                {
+            for(var i=0;i<7;i++)
+            {
+              if(this.TouchTraps(i))
+              {
+                    this.x=50;
+                    this.y=160;
+              }
+            }
+            if ( this.ground ) {
+               if ( this.isNotMove() ) {
+                  if(this.onFloor)
+                  {
                     this.StopStandingAction();
                     this.OnFloorAction();
-                }
-                else{
+                  }
+                  else{
                     this.StopOnFloorAction();
                     this.StandingAction();
                    this.autoDeaccelerateX();
-                }
+                  }
             } else if ( this.moveRight ) {
                 this.accelerateX( Jumper.accelRight );
+                this.setFlippedX(true);
             } else if ( this.moveLeft ){
                 this.accelerateX( Jumper.accelLeft );
+                this.setFlippedX(false);
             } 
         }
         this.x += this.vx;
@@ -231,6 +268,10 @@ var Jumper = cc.Sprite.extend({
 
     setBlocks: function( blocks ) {
         this.blocks = blocks;
+    },
+    
+    setTraps: function( traps ) {
+        this.traps = traps;
     },
     
     createOnFloorAction: function() {

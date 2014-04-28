@@ -17,6 +17,7 @@
             'src/Jumper.js',
             'src/Block.js',
             'src/Background.js',
+            'src/Trap.js',
         ]
     };
 
