@@ -24,14 +24,19 @@ var Jumper = cc.Sprite.extend({
         
         this.openOnFloorAction=0;
         this.openStandingAction=0;
+        this.openWalkingAction=0;
+        this.openJumpAction=0;
         
         this.onFloorAction=this.createOnFloorAction();
         this.standingAction=this.createStandingAction();
+        this.walkingAction=this.createWalkingAction();
+        this.jumpAction=this.createJumpAction();
 
         this.ground = null;
 
         this.blocks = [];
         this.traps = [];
+        this.gates = [];
 
         this.updateSpritePosition();
     },
@@ -95,18 +100,43 @@ var Jumper = cc.Sprite.extend({
             return false;
         }
     },
+    
+    bounceOff: function(i){
+        
+        if( this.traps[i].getMoveRight()==this.run )
+        {
+            this.x=500;
+            this.y=50;
+        }
+        else if( this.traps[i].getMoveLeft()==this.run )
+        {
+            this.x=500;
+            this.y=50;
+        }
+        else if( this.traps[i].getMoveUp()==this.run )
+        {
+            this.x=500;
+            this.y=50;
+        }
+        else if( this.traps[i].getMoveDown()==this.run )
+        {
+            this.x=500;
+            this.y=50;
+        }
+    },
 
     updateXMovement: function() {
             for(var i=0;i<7;i++)
             {
               if(this.TouchTraps(i))
               {
-                    this.x=50;
-                    this.y=160;
+                    this.bounceOff(i);
               }
             }
             if ( this.ground ) {
                if ( this.isNotMove() ) {
+
+                   this.StopWalkingAction();
                   if(this.onFloor)
                   {
                     this.StopStandingAction();
@@ -118,20 +148,55 @@ var Jumper = cc.Sprite.extend({
                    this.autoDeaccelerateX();
                   }
             } else if ( this.moveRight ) {
+                this.WalkingAction();
                 this.accelerateX( Jumper.accelRight );
                 this.setFlippedX(true);
             } else if ( this.moveLeft ){
+                this.WalkingAction();
                 this.accelerateX( Jumper.accelLeft );
                 this.setFlippedX(false);
             } 
         }
-        this.x += this.vx;
-        /*if ( this.x < 0 ) {
-            this.x += screenWidth;
+        if ( this.x < 20 && this.moveLeft) {
+            
+          this.vx=0;
         }
-        if ( this.x > screenWidth ) {
-            this.x -= screenWidth;
-        }*/
+        else if ( this.x > 1168 && this.moveRight ) {
+            this.vx=0;
+        }
+        this.x += this.vx;
+    },
+    
+    JumpAction: function(){
+        if(this.openJumpAction==0)
+        {
+         this.runAction( this.jumpAction );
+         this.openJumpAction=1;    
+        }
+    },
+    
+    StopJumpAction: function(){
+        if(this.openJumpAction==1)
+        {
+            this.stopAction(this.jumpAction);
+            this.openJumpAction=0;
+        }
+    },
+    
+    WalkingAction: function(){
+        if(this.openWalkingAction==0)
+        {
+         this.runAction( this.walkingAction );
+         this.openWalkingAction=1;    
+        }
+    },
+    
+    StopWalkingAction: function(){
+        if(this.openWalkingAction==1)
+        {
+            this.stopAction(this.walkingAction);
+            this.openWalkingAction=0;
+        }
     },
     
     OnFloorAction: function(){
@@ -180,7 +245,12 @@ var Jumper = cc.Sprite.extend({
     updateYMovement: function() {
         if ( this.ground ) {
             this.vy = 0;
+            this.StopJumpAction();
             if ( this.jump ) {
+                this.StopOnFloorAction();
+                this.StopWalkingAction();
+                this.StopStandingAction();
+                this.JumpAction();
                 this.jumpUp();        
             }
         } else {
@@ -274,9 +344,21 @@ var Jumper = cc.Sprite.extend({
         this.traps = traps;
     },
     
+    setGates: function( gates ) {
+        this.gates = gates;
+    },
+    
     createOnFloorAction: function() {
 	var animation = new cc.Animation.create();
 	animation.addSpriteFrameWithFile( 'res/images/player/Onfloor.png' );
+	console.log( animation.getDelayPerUnit() );
+	animation.setDelayPerUnit( 0.2 );
+	return cc.RepeatForever.create( cc.Animate.create( animation ) );
+    },
+    
+    createJumpAction: function() {
+	var animation = new cc.Animation.create();
+	animation.addSpriteFrameWithFile( 'res/images/playeranimation/jump/0.png' );
 	console.log( animation.getDelayPerUnit() );
 	animation.setDelayPerUnit( 0.2 );
 	return cc.RepeatForever.create( cc.Animate.create( animation ) );
@@ -289,6 +371,17 @@ var Jumper = cc.Sprite.extend({
     animation.addSpriteFrameWithFile( 'res/images/playeranimation/standing1/standing3.png' );
 	console.log( animation.getDelayPerUnit() );
 	animation.setDelayPerUnit( 0.4 );
+	return cc.RepeatForever.create( cc.Animate.create( animation ) );
+    },
+    
+    createWalkingAction: function() {
+	var animation = new cc.Animation.create();
+	animation.addSpriteFrameWithFile( 'res/images/playeranimation/walking1/walking1.png' );
+	animation.addSpriteFrameWithFile( 'res/images/playeranimation/walking1/walking2.png' );
+    animation.addSpriteFrameWithFile( 'res/images/playeranimation/walking1/walking3.png' );
+    animation.addSpriteFrameWithFile( 'res/images/playeranimation/walking1/walking4.png' );
+	console.log( animation.getDelayPerUnit() );
+	animation.setDelayPerUnit( 0.1 );
 	return cc.RepeatForever.create( cc.Animate.create( animation ) );
     }
 });

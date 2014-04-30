@@ -20,15 +20,30 @@ var Trap = cc.Sprite.extend({
         this.zonex=0;
         this.zoney=0;
         this.area=area;
-
+        
+        if(this.vx!=0)
+        {
         this.moveLeft = this.run;
         this.moveRight = this.run;
+        }
+        else{
+        this.moveLeft = this.stop;
+        this.moveRight = this.stop;
+        }
+        
+        if(this.vy!=0)
+        {
         this.moveUp= this.run;
         this.moveDown= this.run;
+        }
+        else{
+        this.moveUp= this.stop;
+        this.moveDown= this.stop;
+        }
         
         this.openTrap1Action=0;
         
-        this.trap1Action=this.createTrap1Action();;
+        this.trap1Action=this.createTrap1Action();
 
         this.ground = null;
 
@@ -76,6 +91,22 @@ var Trap = cc.Sprite.extend({
          this.runAction( this.trap1Action );
          this.openTrap1Action=1;    
         }
+    },
+    
+    getMoveRight: function(){
+        return this.moveRight;
+    },
+    
+    getMoveLeft: function(){
+        return this.moveLeft;
+    },
+    
+    getMoveUp: function(){
+        return this.moveUp;
+    },
+    
+    getMoveDown: function(){
+        return this.moveDown;
     },
     
     updateXMovement: function() {

@@ -3,15 +3,16 @@ var GameLayer = cc.LayerColor.extend({
         this._super( new cc.Color4B( 127, 127, 127, 255 ) );
         this.setPosition( new cc.Point( 0, 0 ) );
         
-        /*this.background = new Background();
+        this.background = new Background();
         this.background.setAnchorPoint(0,0);
         this.background.setPosition(new cc.Point(0,0));
         this.addChild(this.background);
-        this.background.scheduleUpdate();*/
+        this.background.scheduleUpdate();
         
         //this.createGround();
         this.createBlocks();
         this.createTraps();
+        this.createGate();
         
         /*this.Trap= new Trap(200,180);
         this.addChild(this.Trap);
@@ -20,7 +21,8 @@ var GameLayer = cc.LayerColor.extend({
         this.jumper = new Jumper( 50, 160 );
         this.jumper.setBlocks( this.blocks );
         this.jumper.setTraps(this.traps);
-        var followAction = cc.Follow.create(this.jumper, cc.rect(0, 0, 2000,2000));
+        this.jumper.setGates(this.gates);
+        var followAction = cc.Follow.create(this.jumper, cc.rect(0, 0, 1188,2000));
         this.runAction(followAction);
         this.addChild( this.jumper );
         
@@ -50,7 +52,7 @@ var GameLayer = cc.LayerColor.extend({
 
     createBlocks: function() {
         this.blocks = [];
-        for(var i=1;i<10;i++)
+        for(var i=1;i<9;i++)
         {
             var Block1 = new Block( i*132, 0, 132, 43);
             this.blocks.push( Block1 );
@@ -96,9 +98,6 @@ var GameLayer = cc.LayerColor.extend({
         
         var Block1 = new Block( 1000, 900, 132, 43 );
         this.blocks.push( Block1 );
-        
-        var Block1 = new Block( 1132, 900, 132, 43 );
-        this.blocks.push( Block1 );
 
         this.blocks.forEach( function( b ) {
             this.addChild( b );
@@ -136,6 +135,17 @@ var GameLayer = cc.LayerColor.extend({
         this.traps.push(Trap1);
         
         this.traps.forEach( function( b ) {
+            this.addChild( b );
+        }, this );
+    },
+    
+    createGate: function(){
+        this.gates =[];
+        var gate1 = new Gate(1030,930);
+        gate1.scheduleUpdate();
+        this.gates.push(gate1);
+        
+        this.gates.forEach( function( b ) {
             this.addChild( b );
         }, this );
     },
