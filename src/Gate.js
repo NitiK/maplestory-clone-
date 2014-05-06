@@ -5,6 +5,11 @@ var Gate = cc.Sprite.extend({
         this.setAnchorPoint( cc.p( 0, 0 ) );
         this.setPosition( cc.p( x, y ) );
         
+        this.x=x;
+        this.y=y;
+        
+        this.level=0;
+        
         this.openGateAction=0;
         
         this.gateAction=this.createGateAction();
@@ -13,6 +18,20 @@ var Gate = cc.Sprite.extend({
     update: function() {
         this.GateAction();
         
+        
+    },
+    
+    getX: function() {
+        return this.x;
+    },
+    
+    getY: function(){
+        return this.y;
+    },
+    
+     GateOn: function(){
+         this.level+=1;
+        return this.level;
     },
     
     GateAction: function(){

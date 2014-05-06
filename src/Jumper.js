@@ -21,6 +21,7 @@ var Jumper = cc.Sprite.extend({
         this.moveRight = false;
         this.jump = false;
         this.onFloor = false;
+        this.moveUp = false;
         
         this.openOnFloorAction=0;
         this.openStandingAction=0;
@@ -82,7 +83,7 @@ var Jumper = cc.Sprite.extend({
         }, this );*/
         if(this.onFloor)
         {
-           if((spirteTrap.x<=this.x+30&&spirteTrap.x>=this.x-30)&&         (spirteTrap.y<=this.y+30&&spirteTrap.y>=this.y-60))
+           if((spirteTrap.x<=this.x+30&&spirteTrap.x>=this.x-50)&&         (spirteTrap.y<=this.y+30&&spirteTrap.y>=this.y-60))
            {
                return true;
            }
@@ -91,7 +92,7 @@ var Jumper = cc.Sprite.extend({
                 return false;
             }
         }
-        else if((spirteTrap.x<=this.x+30&&spirteTrap.x>=this.x-30)&&         (spirteTrap.y<=this.y+60&&spirteTrap.y>=this.y-60))
+        else if((spirteTrap.x<=this.x+30&&spirteTrap.x>=this.x-50)&&         (spirteTrap.y<=this.y+60&&spirteTrap.y>=this.y-60))
         {
             
             return true;
@@ -105,23 +106,34 @@ var Jumper = cc.Sprite.extend({
         
         if( this.traps[i].getMoveRight()==this.run )
         {
-            this.x=500;
-            this.y=50;
+            this.x=50;
+            this.y=160;
         }
         else if( this.traps[i].getMoveLeft()==this.run )
         {
-            this.x=500;
-            this.y=50;
+            this.x=50;
+            this.y=160;
         }
         else if( this.traps[i].getMoveUp()==this.run )
         {
-            this.x=500;
-            this.y=50;
+            this.x=50;
+            this.y=160;
         }
         else if( this.traps[i].getMoveDown()==this.run )
         {
-            this.x=500;
-            this.y=50;
+            this.x=50;
+            this.y=160;
+        }
+    },
+    
+    GateOpen: function(){
+        var spirteGate = this.gates[0].getPosition();
+        if((this.x >= spirteGate.x+30 && this.x <= spirteGate.x+80)&&this.y >= spirteGate.y &&this.y < spirteGate.y+30)
+        {
+            console.log("HHH");
+            var scene = GameLayer.scene(2);
+			var gameTransition = cc.TransitionFade.create(0.5, scene);
+			cc.Director.getInstance().replaceScene(gameTransition);
         }
     },
 
@@ -137,7 +149,11 @@ var Jumper = cc.Sprite.extend({
                if ( this.isNotMove() ) {
 
                    this.StopWalkingAction();
-                  if(this.onFloor)
+                   if(this.moveUp)
+                   {
+                       this.GateOpen();
+                   }
+                  else if(this.onFloor)
                   {
                     this.StopStandingAction();
                     this.OnFloorAction();
@@ -148,20 +164,22 @@ var Jumper = cc.Sprite.extend({
                    this.autoDeaccelerateX();
                   }
             } else if ( this.moveRight ) {
+                this.StopOnFloorAction();
                 this.WalkingAction();
                 this.accelerateX( Jumper.accelRight );
                 this.setFlippedX(true);
             } else if ( this.moveLeft ){
+                this.StopOnFloorAction();
                 this.WalkingAction();
                 this.accelerateX( Jumper.accelLeft );
                 this.setFlippedX(false);
             } 
         }
-        if ( this.x < 20 && this.moveLeft) {
+        if ( this.x < 20 && this.vx<0) {
             
           this.vx=0;
         }
-        else if ( this.x > 1168 && this.moveRight ) {
+        else if ( this.x > 1168 && this.vx>0 ) {
             this.vx=0;
         }
         this.x += this.vx;
@@ -393,4 +411,5 @@ Jumper.KEYMAP[cc.KEY.left] = 'moveLeft';
 Jumper.KEYMAP[cc.KEY.right] = 'moveRight';
 Jumper.KEYMAP[cc.KEY.space] = 'jump';
 Jumper.KEYMAP[cc.KEY.down] = 'onFloor';
+Jumper.KEYMAP[cc.KEY.up] = 'moveUp';
         
