@@ -1,7 +1,10 @@
 var Trap = cc.Sprite.extend({
-    ctor: function( x, y ,vx,vy,area) {
+    ctor: function( x, y ,vx,vy,area,i) {
         this._super();
+        if(i==0)
+        {
         this.initWithFile( 'res/images/trap/trap1.png' );
+        }
         this.setAnchorPoint( cc.p( 0.5, 0 ) );
         this.x = x;
         this.y = y;
@@ -41,9 +44,9 @@ var Trap = cc.Sprite.extend({
         this.moveDown= this.stop;
         }
         
-        this.openTrap1Action=0;
+        this.openTrapAction=0;
         
-        this.trap1Action=this.createTrap1Action();
+        this.trapAction=this.createActionTrap(i);
 
         this.ground = null;
 
@@ -85,11 +88,11 @@ var Trap = cc.Sprite.extend({
         return ( !this.moveLeft ) && ( !this.moveRight );
     },
     
-    Trap1Action: function(){
-        if(this.openTrap1Action==0)
+    TrapAction: function(){
+        if(this.openTrapAction==0)
         {
-         this.runAction( this.trap1Action );
-         this.openTrap1Action=1;    
+         this.runAction( this.trapAction );
+         this.openTrapAction=1;    
         }
     },
     
@@ -110,9 +113,10 @@ var Trap = cc.Sprite.extend({
     },
     
     updateXMovement: function() {
-        this.Trap1Action();
+        this.TrapAction();
         if(this.moveRight==this.run)
         {
+          this.setFlippedX(true);    
           if(this.zonex<this.area)
           {
               this.x+=this.vx;
@@ -126,6 +130,7 @@ var Trap = cc.Sprite.extend({
           }
         }
         else if(this.moveLeft==this.run){
+          this.setFlippedX(false);    
           if(this.zonex<this.area)
           {
               this.x-=this.vx;
@@ -147,7 +152,7 @@ var Trap = cc.Sprite.extend({
     },
     
     updateYMovement: function() {
-        this.Trap1Action();
+        this.TrapAction();
         if(this.moveUp==this.run)
         {
           if(this.zoney<this.area)
@@ -213,6 +218,34 @@ var Trap = cc.Sprite.extend({
         }
     },
     
+    createActionTrap: function(i)
+    {
+        if(i==0)
+        {
+            return this.createTrap1Action();
+        }
+        else if(i==1)
+        {
+            return this.createTrap2Action();
+        }
+        else if(i==2)
+        {
+             return this.createTrap3Action();
+        }
+        else if(i==3)
+        {
+             return this.createTrap4Action();
+        }
+        else if(i==4)
+        {
+             return this.createTrap5Action();
+        }
+        else if(i==5)
+        {
+             return this.createTrap6Action();
+        }
+    },
+    
     createTrap1Action: function() {
 	var animation = new cc.Animation.create();
 	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap1animation/0.png' );
@@ -223,13 +256,60 @@ var Trap = cc.Sprite.extend({
 	return cc.RepeatForever.create( cc.Animate.create( animation ) );
     },
     
-    createStandingAction: function() {
+    createTrap2Action: function() {
 	var animation = new cc.Animation.create();
-	animation.addSpriteFrameWithFile( 'res/images/playeranimation/standing1/standing1.png' );
-	animation.addSpriteFrameWithFile( 'res/images/playeranimation/standing1/standing2.png' );
-    animation.addSpriteFrameWithFile( 'res/images/playeranimation/standing1/standing3.png' );
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap2animation/0.png' );
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap2animation/1.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap2animation/2.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap2animation/3.png' );
 	console.log( animation.getDelayPerUnit() );
-	animation.setDelayPerUnit( 0.4 );
+	animation.setDelayPerUnit( 0.2 );
+	return cc.RepeatForever.create( cc.Animate.create( animation ) );
+    },
+    
+    createTrap3Action: function() {
+	var animation = new cc.Animation.create();
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap3animation/0.png' );
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap3animation/1.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap3animation/2.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap3animation/3.png' );
+	console.log( animation.getDelayPerUnit() );
+	animation.setDelayPerUnit( 0.2 );
+	return cc.RepeatForever.create( cc.Animate.create( animation ) );
+    },
+    
+    createTrap4Action: function() {
+	var animation = new cc.Animation.create();
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap4animation/0.png' );
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap4animation/1.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap4animation/2.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap4animation/3.png' );
+	console.log( animation.getDelayPerUnit() );
+	animation.setDelayPerUnit( 0.2 );
+	return cc.RepeatForever.create( cc.Animate.create( animation ) );
+    },
+    
+    createTrap5Action: function() {
+	var animation = new cc.Animation.create();
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap5animation/0.png' );
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap5animation/1.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap5animation/2.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap5animation/3.png' ); 
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap5animation/4.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap5animation/5.png' );
+	console.log( animation.getDelayPerUnit() );
+	animation.setDelayPerUnit( 0.2 );
+	return cc.RepeatForever.create( cc.Animate.create( animation ) );
+    },
+    
+    createTrap6Action: function() {
+	var animation = new cc.Animation.create();
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap6animation/0.png' );
+	animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap6animation/1.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap6animation/2.png' );
+    animation.addSpriteFrameWithFile( 'res/images/trapanimation/trap6animation/3.png' );
+	console.log( animation.getDelayPerUnit() );
+	animation.setDelayPerUnit( 0.2 );
 	return cc.RepeatForever.create( cc.Animate.create( animation ) );
     }
 });

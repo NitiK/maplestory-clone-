@@ -1,8 +1,32 @@
 var Block = cc.Sprite.extend({
-    ctor: function( x1, y1, x2, y2 ) {
+    ctor: function( x1, y1, x2, y2 ,i) {
         this._super();
+        
+        if(i==0)
+        {
         this.initWithFile( 'res/images/block1.png',
                            cc.rect( 0, 0, x2, y2 ) );
+        }
+        else if(i==1)
+        {
+          this.initWithFile( 'res/images/background/ground/ground2.png',
+                           cc.rect( 0, 0, x2, y2 ) );
+        }
+        else if(i==2)
+        {
+            this.initWithFile( 'res/images/background/block/block2.png',
+                           cc.rect( 0, 0, x2, y2 ) );
+        }
+        else if(i==3)
+        {
+            this.initWithFile( 'res/images/background/block/block0.png',
+                           cc.rect( 0, 0, x2, y2 ) );
+        }
+        else if(i==4)
+        {
+            this.initWithFile( 'res/images/background/block/block0.2.png',
+                           cc.rect( 0, 0, x2, y2 ) );
+        }
         this.setAnchorPoint( cc.p( 0, 0 ) );
         this.setPosition( cc.p( x1, y1 ) );
     },

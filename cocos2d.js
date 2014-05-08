@@ -19,6 +19,7 @@
             'src/Background.js',
             'src/Trap.js',
             'src/Gate.js',
+            'src/Connect.js',
         ]
     };
 
